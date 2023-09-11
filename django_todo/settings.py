@@ -41,6 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'todo',
+#     And the final thing that we need to do to finish this up is to move to Settings.py
+# And add our to-do app to the list of installed apps.
+# And this is going to allow Jango to know to look inside of that app folder for a templates directory.
 ]
 
 MIDDLEWARE = [

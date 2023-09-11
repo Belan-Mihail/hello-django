@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from todo.views import say_hello
+from todo.views import get_todo_list
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,5 +26,11 @@ urlpatterns = [
 # It takes the view function that it's going to return.
 # Which is our say_hello function.
 # And it takes a name parameter which we'll get to a bit later but for right now we'll just call it hello
-    path('hello/', say_hello, name='hello')
+    # path('hello/', say_hello, name='hello')
+    
+    path('', get_todo_list, name='get_todo_list')
+
+#     And instead, I'm gonna replace it with just an empty string.
+# This means that we don't need to specify any particular URL in order to hit that Python function
+# so this is gonna act as our home page.
 ]
