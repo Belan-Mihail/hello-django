@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from todo.views import get_todo_list
+from todo.views import get_todo_list, add_item
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,9 +28,16 @@ urlpatterns = [
 # And it takes a name parameter which we'll get to a bit later but for right now we'll just call it hello
     # path('hello/', say_hello, name='hello')
     
-    path('', get_todo_list, name='get_todo_list')
+    path('', get_todo_list, name='get_todo_list'),
 
 #     And instead, I'm gonna replace it with just an empty string.
 # This means that we don't need to specify any particular URL in order to hit that Python function
 # so this is gonna act as our home page.
+
+
+    path('add', add_item, name='add')
+#     Lastly we need a new URL to access this template because right now
+# if we click the link to add an item we'll get a page not found error.
+# So I'm gonna go to urls.py and copy the URL for the home page.
+# Change this URL to add
 ]
