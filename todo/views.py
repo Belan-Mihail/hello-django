@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Item
 # We need access to the item model in this file so the first thing I'm going to do
 # is right at the top. From .models import item.
@@ -95,7 +95,7 @@ def get_todo_list(request):
 # get_todo list view like we were before.
 def add_item(request):
     if request.method == 'POST':
-        form  = ItemForm(request.POST)
+        form = ItemForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('get_todo_list')
@@ -105,4 +105,55 @@ def add_item(request):
     }
     return render(request, 'todo/add_item.html', context)
 
+# First along with taking in the request. This view will also take in an item ID parameter
+# And that's the item ID we just attached to the Edit link.
+def edit_item(request, item_id):
+    item = get_object_or_404(Item, id=item_id)
+    # Then just like above we'll create an instance of our item form and return it to the template in the context.
+    if request.method == 'POST':
+        form = ItemForm(request.POST, instance=item)
+        if form.is_valid():
+            form.save()
+            return redirect('get_todo_list')
+#     I'm actually just going to copy the entire handler from the add item view and paste it in here.
+# Making only one small change and that's to give our form the specific item instance we want to update.
+# Everything else can remain exactly the same.
+# And with that saved. We can now reload our site and see that updating items is working as expected.
+    
+    form = ItemForm(request.POST, instance=item)
+#     To pre-populate the form with the items current details.
+# We can pass an instance argument to the form.
+# Telling it that it should be prefilled with the information for the item we just got from the database.
+    context = {
+        'form': form
+    }
+#     Back in the edit_item view. Let's first get a copy of the item from the database.
+# We can do this using a built in django shortcut called get_object_or_404
+# Which we'll use to say we want to get an instance of the item model.
+# With an ID equal to the item ID that was passed into the view via the URL.
+# This method will either return the item if it exists. Or a 404 page not found if not.
 
+
+    return render(request, 'todo/edit_item.html', context)
+
+
+# This one won't even have a template because it's just going to toggle the item status.
+# And then redirect back to the to-do list.
+def toggle_item(request, item_id):
+
+#     We can then use the same logic to get the item in question.
+# Change it's done status to the opposite by using not.
+# Which will just flip it to the opposite of whatever it currently is.
+# And then save the item.
+# So this will make it so that when a user clicks toggle. Our view will get the item.
+# And if it's done status is currently true it will flip it to false and vice versa.
+    item = get_object_or_404(Item, id=item_id)
+    item.done = not item.done
+    item.save()
+    return redirect('get_todo_list')
+
+
+def delete_item(request, item_id):
+    item = get_object_or_404(Item, id=item_id)
+    item.delete()
+    return redirect('get_todo_list')

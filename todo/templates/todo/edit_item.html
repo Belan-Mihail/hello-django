@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Edit to do item</h1>
+    <!-- Then we can actually remove the form action entirely which will cause it
+to post to the same URL we're currently on.
+And lastly I'll change the button text to update item. action="{% url 'add' %}" -->
+    <form method="POST">
+        <!-- On that note we do need to add a special template tag to the form as a security measure.
+Just inside the opening form tag whenever we're posting information in Django.
+We need to add the CSRF or cross-site request forgery token. -->
+
+        <!-- This form is going to be the mechanism by which a user can enter the name for a todo item.
+And whether or not it's done. -->
+<!-- This token is a randomly generated unique value which will be added
+to the form as a hidden input field when the forms submitted.
+And works to guarantee that the data we're posting is actually coming from our
+todo list app and not from another website. -->
+<!-- If we were to skip adding this token.
+Django would throw an error when we submitted the form because it wouldn't -->
+            {% csrf_token %}
+            <!-- после создания шаблона формы ниженаписанный HTML не нужен -->
+            {{ form.as_p }}
+            <!-- <div>
+                <p>
+                    <label for="id_name">Name: </label>
+                    <input type="text" id="id_name" name="item_name"> -->
+                    <!-- As a quick review, the name attribute of this input is the name we'll use to access
+the input's value in our view function.
+And the ID attribute is the way that we can identify it on the page to apply its label CSS and so on. -->
+                <!-- </p>
+            </div>
+            <div>
+                <p>
+                    <label for="id_done">Done: </label>
+                    <input type="checkbox" id="id_done" name="done">
+                </p>
+            </div> -->
+            <div>
+                <p>
+                    <button type="submit">Edit Item</button>
+                </p>
+            </div>
+    </form>
+</body>
+</html>

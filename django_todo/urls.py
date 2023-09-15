@@ -15,7 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from todo.views import get_todo_list, add_item
+from todo import views
+
+
+
+# Добавление views для уменьшения длины импорта
+# from todo.views import get_todo_list, add_item, edit_item, toggle_item
+# Our list of imports here at the top is getting quite long.
+# So let's change this slightly just to clean it up.
+# Instead of importing each view individually.
+# I'll just remove them all and change the import to from to do import views.
+# Now I can simply add views dot in front of all the views.
+# And everything is exactly the same. But a little less verbose.
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,16 +39,26 @@ urlpatterns = [
 # And it takes a name parameter which we'll get to a bit later but for right now we'll just call it hello
     # path('hello/', say_hello, name='hello')
     
-    path('', get_todo_list, name='get_todo_list'),
+    path('', views.get_todo_list, name='get_todo_list'),
 
 #     And instead, I'm gonna replace it with just an empty string.
 # This means that we don't need to specify any particular URL in order to hit that Python function
 # so this is gonna act as our home page.
 
 
-    path('add', add_item, name='add')
+    path('add', views.add_item, name='add'),
 #     Lastly we need a new URL to access this template because right now
 # if we click the link to add an item we'll get a page not found error.
 # So I'm gonna go to urls.py and copy the URL for the home page.
 # Change this URL to add
+
+    path('edit/<item_id>', views.edit_item, name='edit'),
+#     This angular bracket syntax here is common in Django URLs.
+# And is the mechanism by which the item ID makes its way from links or forms
+# in our templates.
+# Through the URL and into the view which expects it as a parameter.
+    path('toggle/<item_id>', views.toggle_item, name='toggle'),
+    path('delete/<item_id>', views.delete_item, name='delete'),
+
+
 ]
